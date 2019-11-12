@@ -16,10 +16,7 @@ class DefaultController extends AbstractController
      */
     public function index(): Response
     {
-        $welcome = "Bienvenue !";
 
-        return $this->render('default.html.twig', [
-            'welcome' => $welcome,
-        ]);
+        return $this->render('default.html.twig');
     }
 }
