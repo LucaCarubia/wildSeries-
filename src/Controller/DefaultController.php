@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
+     * Homepage de l'application
      * @return Response
      * @Route("/", name="app_index")
      */
