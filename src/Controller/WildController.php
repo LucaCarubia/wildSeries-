@@ -1,11 +1,10 @@
 <?php
 
-
 namespace App\Controller;
-
 
 use App\Entity\Category;
 use App\Entity\Program;
+use App\Entity\Season;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,8 +16,8 @@ class WildController extends AbstractController
 {
 
     /**
-     * @return Response
      * @Route("/index", name="index")
+     * @return Response
      */
     public function index(): Response
     {
@@ -36,8 +35,8 @@ class WildController extends AbstractController
     }
 
     /**
-     * @param string $slug The slugger
      * @Route("/show/{slug<^[a-z0-9-]+$>}", defaults={"slug" = null}, name="show")
+     * @param string $slug The slugger
      * @return Response
      */
     public function show(?string $slug): Response
@@ -74,8 +73,11 @@ class WildController extends AbstractController
     {
         $repositoryCategory = $this->getDoctrine()->getRepository(Category::class);
         $categories = $repositoryCategory->findOneBy(['name' => $categoryName]);
-        $idCategory = $categories->getId();
 
+        if (!$categories) {
+            throw $this->createNotFoundException('this title was not found');
+        }
+        $idCategory = $categories->getId();
 
         $repositoryProgram = $this->getDoctrine()->getRepository(Program::class);
 
@@ -88,6 +90,55 @@ class WildController extends AbstractController
 
         return $this->render('wild/category.html.twig', [
             'programs' => $programs,
+        ]);
+    }
+
+    /**
+     * @Route("/program/{programName<^[a-z0-9-]+$>}", defaults={"programName" = null}, name="show_program")
+     * @param string $programName
+     * @return Response
+     */
+    public function showByProgram(?string $programName): Response
+    {
+        if (!$programName) {
+            throw $this
+                ->createNotFoundException('No slug has been sent to find a program in program\'s table.');
+        }
+        $programName = preg_replace(
+            '/-/',
+            ' ', ucwords(trim(strip_tags($programName)), "-")
+        );
+
+        $repositoryProgram = $this->getDoctrine()->getRepository(Program::class);
+
+        $program = $repositoryProgram->findOneBy(
+            ['title' => mb_strtolower($programName)
+        ]);
+
+        $seasonProgram = $program->getSeasons();
+
+        return $this->render('wild/program.html.twig', [
+            'program' => $program,
+            'seasons' => $seasonProgram,
+        ]);
+    }
+
+    /**
+     * @Route("/season/{id}", name="show_season")
+     * @param int $id
+     * @return Response
+     */
+    public function showBySeason(int $id): Response
+    {
+       $repositorySeason = $this->getDoctrine()->getRepository(Season::class);
+       $season = $repositorySeason->find($id);
+       $program = $season->getProgramId();
+       $episode = $season->getEpisodes();
+
+        return $this->render('wild/season.html.twig', [
+            'program' => $program,
+            'episode' => $episode,
+            'season' => $season,
         ]);
     }
 }
