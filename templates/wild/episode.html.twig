@@ -5,24 +5,14 @@
         <div class="media-body">
             <h3 class="mt-0">Série : {{ program.title }} </h3>
             <img class="align-self-start mr-3" src="{{ program.poster }}">
-                <p>Résumer : {{ program.summary }}</p>
+            <p>Résumer : {{ program.summary }}</p>
         </div>
         <div class="media-body">
-            <h3 class="mt-0">Détail de l'épisode : </h3>
-            <ul>
-                <li>Titre : {{ episode.title }}</li>
-                <li>Episode numéro : {{ episode.number }}</li>
-                <li>Synopsis : {{ episode.synopsis }}</li>
-            </ul>
+            <strong>Saison : </strong><a href="{{ path('wild_show_season', { id: season.id }) }}">Voir le détail de la
+                saison </a><br>
+            <strong>Programme : </strong><a href="{{ path('wild_show_program', { programName: program.title | lower | replace({" " : "-" }) }) }}">Voir le détail du
+                programme </a>
         </div>
-        <div class="media-body">
-            <h3 class="mt-0">Détail de la saison : </h3>
-            <ul>
-                <li>Année : {{ season.year }}</li>
-                <li>Déscription : {{ season.description }}</li>
-            </ul>
-        </div>
-
     </div>
 {% endblock %}
 
