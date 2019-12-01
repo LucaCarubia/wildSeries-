@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{%  block body %}
+    <h2>Ajouter une catégorie : </h2>
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col">
+            {{ form_widget(form) }}
+        </div>
+        <div class="col" id="some-custom-id">
+            {{ form_row(form) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
