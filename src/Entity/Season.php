@@ -96,7 +96,7 @@ class Season
     {
         if (!$this->episodes->contains($episode)) {
             $this->episodes[] = $episode;
-            $episode->setSeasonId($this);
+            $episode->setSeason($this);
         }
 
         return $this;
@@ -107,8 +107,8 @@ class Season
         if ($this->episodes->contains($episode)) {
             $this->episodes->removeElement($episode);
             // set the owning side to null (unless already changed)
-            if ($episode->getSeasonId() === $this) {
-                $episode->setSeasonId(null);
+            if ($episode->getSeason() === $this) {
+                $episode->setSeason(null);
             }
         }
 
