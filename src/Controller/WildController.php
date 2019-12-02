@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Actor;
 use App\Entity\Category;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
 use App\Form\CategoryType;
 use App\Form\ProgramSearchType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -179,6 +181,18 @@ class WildController extends AbstractController
             'episode' => $episode,
             'season' => $season,
             'program' => $program,
+        ]);
+    }
+
+    /**
+     * @Route("/actor/{name}", name="show_actor")
+     * @param Actor $actor
+     * @return Response
+     */
+    public function showActor(Actor $actor): Response
+    {
+        return $this->render('wild/showActor.html.twig', [
+            'actor' => $actor,
         ]);
     }
 }
