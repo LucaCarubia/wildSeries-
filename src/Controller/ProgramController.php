@@ -54,10 +54,14 @@ class ProgramController extends AbstractController
             $entityManager->flush();
 
             $email = (new Email())
-                ->from('luca.carubia42@gmail.com')
+                ->from($this->getParameter('mailer_from'))
                 ->to('luca.carubia42@gmail.com')
                 ->subject('Une nouvelle série vient d\'être publiée !')
-                ->html('<p>Une nouvelle série vient d\'être publiée sur Wild Séries !</p>');
+                ->html($this->renderView(
+                    'program/notification.html.twig', [
+                    'program' => $program,
+                    'slug' => $slug,
+                ]));
 
             $mailer->send($email);
 
@@ -115,7 +119,7 @@ class ProgramController extends AbstractController
      */
     public function delete(Request $request, Program $program): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $program->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($program);
             $entityManager->flush();
