@@ -31,6 +31,11 @@ class Comment
      */
     private $episode;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="author")
+     */
+    private $author;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,14 +65,26 @@ class Comment
         return $this;
     }
 
-    public function getEpisodeId(): ?Episode
+    public function getEpisode(): ?Episode
     {
         return $this->episode;
     }
 
-    public function setEpisodeId(?Episode $episode): self
+    public function setEpisode(?Episode $episode): self
     {
         $this->episode = $episode;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

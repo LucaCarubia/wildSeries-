@@ -7,22 +7,22 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ episode.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ episode.title }}</td>
-            </tr>
-            <tr>
-                <th>Number</th>
-                <td>{{ episode.number }}</td>
-            </tr>
-            <tr>
-                <th>Synopsis</th>
-                <td>{{ episode.synopsis }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ episode.id }}</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ episode.title }}</td>
+        </tr>
+        <tr>
+            <th>Number</th>
+            <td>{{ episode.number }}</td>
+        </tr>
+        <tr>
+            <th>Synopsis</th>
+            <td>{{ episode.synopsis }}</td>
+        </tr>
         </tbody>
     </table>
 
@@ -31,4 +31,33 @@
     <a href="{{ path('episode_edit', {'slug': episode.slug}) }}">edit</a>
 
     {{ include('episode/_delete_form.html.twig') }}
+
+    {% if user is not null %}
+        <div class="container-fluid" style="background-color: #dcdcdc73">
+            <h2>Add a comment :</h2>
+            {{ form_start(form) }}
+            <div class="my-custom-class-for-errors">
+                {{ form_errors(form) }}
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    {{ form_row(form.comment) }}
+                </div>
+                <div class="col"
+                {{ form_row(form.rate) }}
+            </div>
+            <button class="btn">{{ button_label|default('Add') }}</button>
+            {{ form_end(form) }}
+        </div>
+    {% endif %}
+
+    <div class="mt-5 container-fluid" style="background-color: #dcdcdc73">
+        <h2>Comments Post :</h2>
+        <ul>
+            {% for comment in episode.comments|sort %}
+                <li>{{ comment.comment }}</li><br>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

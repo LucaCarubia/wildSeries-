@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -32,6 +34,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author_id")
+     */
+    private $author;
+
+    public function __construct()
+    {
+        $this->author = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -109,5 +121,36 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getAuthor(): Collection
+    {
+        return $this->author;
+    }
+
+    public function addAuthor(Comment $author): self
+    {
+        if (!$this->author->contains($author)) {
+            $this->author[] = $author;
+            $author->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAuthor(Comment $author): self
+    {
+        if ($this->author->contains($author)) {
+            $this->author->removeElement($author);
+            // set the owning side to null (unless already changed)
+            if ($author->getUserId() === $this) {
+                $author->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 }
