@@ -17,3 +17,5 @@ quest numero 16 : https://www.loom.com/share/de8cddbe32944ed2ab955e08776b5bf7
 quest numero 17 : https://www.loom.com/share/6309cc77444e42c588fc4c0ff731c6cf
 
 quest numero 18 : https://www.loom.com/share/9002ab6747254a6ba1d5d42f63c7068f
+
+quest numero 19 : https://www.loom.com/share/3b3891ec61264abbacbadef45942edcb
