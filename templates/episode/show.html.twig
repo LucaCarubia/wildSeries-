@@ -28,9 +28,10 @@
 
     <a href="{{ path('episode_index') }}">back to list</a>
 
-    <a href="{{ path('episode_edit', {'slug': episode.slug}) }}">edit</a>
-
-    {{ include('episode/_delete_form.html.twig') }}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('episode_edit', {'slug': episode.slug}) }}">edit</a>
+        {{ include('episode/_delete_form.html.twig') }}
+    {% endif %}
 
     {% if user is not null %}
         <div class="container-fluid" style="background-color: #dcdcdc73">
@@ -56,7 +57,12 @@
         <h2>Comments Post :</h2>
         <ul>
             {% for comment in episode.comments|sort %}
-                <li>{{ comment.comment }}</li><br>
+                {% if is_granted('ROLE_SUBSCRIBERAUTHOR') %}
+                    <li>{{ comment.comment }}</li>
+                    {{ include('comment/_delete_form.html.twig') }}
+                {% else %}
+                    <li>{{ comment.comment }}</li>
+                {% endif %}
             {% endfor %}
         </ul>
     </div>

@@ -6,7 +6,6 @@ use App\Entity\Comment;
 use App\Entity\Episode;
 use App\Form\CommentType;
 use App\Form\EpisodeType;
-use App\Repository\CommentRepository;
 use App\Repository\EpisodeRepository;
 use App\Service\Slugify;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -126,6 +125,23 @@ class EpisodeController extends AbstractController
         if ($this->isCsrfTokenValid('delete'.$episode->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($episode);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('episode_index');
+    }
+
+    /**
+     * @Route("/comment/{id}", name="comment_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Comment $comment
+     * @return Response
+     */
+    public function deleteComment(Request $request, Comment $comment): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($comment);
             $entityManager->flush();
         }
 
