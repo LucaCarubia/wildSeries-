@@ -5,9 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProgramRepository")
+ * @UniqueEntity(
+ *     fields={"title"},
+ *     message="ce titre existe déjà"
+ * )
  */
 class Program
 {
@@ -19,12 +26,15 @@ class Program
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank
+     * @Assert\Length(max=255)
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", length=255)
+     * @Assert\NotBlank
      */
     private $summary;
 
